@@ -2,6 +2,7 @@ package com.nur.services;
 
 import com.nur.dto.EmployeeDTO;
 import com.nur.entity.Employee;
+import com.nur.exceptions.EmployeeNotFoundException;
 import com.nur.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,12 @@ public class EmployeeService {
 
     private EmployeeDTO convertToEmployeeDTO(Employee employee) {
         return new EmployeeDTO(employee.getId(),employee.getName(),employee.getAge(),employee.getSalary());
+    }
+
+    public EmployeeDTO getEmployeeById(Integer id) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
+        return new EmployeeDTO(employee.getId(), employee.getName(), employee.getAge(), employee.getSalary());
     }
 
 
